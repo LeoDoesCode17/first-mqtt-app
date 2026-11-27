@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:first_mqtt_app/core/theme.dart';
-import 'package:first_mqtt_app/screens/home_shell.dart';
+import 'package:first_mqtt_app/screens/auth/login_screen.dart';
 
 void main() {
   runApp(const EcoprintApp());
@@ -18,7 +18,7 @@ class EcoprintApp extends StatelessWidget {
       theme: AppTheme.light(),
       darkTheme: AppTheme.dark(),
       themeMode: ThemeMode.system,
-      home: const HomeShell(),
+      home: const LoginScreen(),
     );
   }
 }
