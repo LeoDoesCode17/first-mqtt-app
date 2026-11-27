@@ -19,8 +19,8 @@ class AppSettings {
     host: 'broker.mqtt.cool',
     port: 1883,
     mac: '68:FE:71:0C:C3:E0',
-    setpoint: 90,
-    timerMinutes: 60,
+    setpoint: 95,
+    timerMinutes: 120,
   );
 
   AppSettings copyWith({

@@ -115,9 +115,20 @@ class _HomeShellState extends State<HomeShell> {
 }
 
 /// Broker connection state; tap to retry when it is down.
+/// Broker connection state; tap to retry when it is down.
 class _ConnectionBadge extends StatelessWidget {
   final EcoprintController c;
   const _ConnectionBadge({required this.c});
+
+  // Short labels so the badge fits next to the app bar icons.
+  // The full text is still available as a tooltip (long-press).
+  String _shortLabel(LinkState s) => switch (s) {
+    LinkState.connected => 'Connected',
+    LinkState.connecting => 'Connecting',
+    LinkState.reconnecting => 'Retrying',
+    LinkState.disconnected => 'Offline',
+    LinkState.failed => 'Failed',
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -138,27 +149,35 @@ class _ConnectionBadge extends StatelessWidget {
         }
         final retry =
             c.link == LinkState.failed || c.link == LinkState.disconnected;
-        return InkWell(
-          borderRadius: BorderRadius.circular(16),
-          onTap: retry ? c.reconnect : null,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            child: Row(
-              children: [
-                Container(
-                  width: 9,
-                  height: 9,
-                  decoration: BoxDecoration(
-                    color: color,
-                    shape: BoxShape.circle,
+        return Tooltip(
+          message: retry ? '${c.linkLabel} - tap to retry' : c.linkLabel,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(16),
+            onTap: retry ? c.reconnect : null,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 9,
+                    height: 9,
+                    decoration: BoxDecoration(
+                      color: color,
+                      shape: BoxShape.circle,
+                    ),
                   ),
-                ),
-                const SizedBox(width: 6),
-                Text(
-                  c.linkLabel,
-                  style: Theme.of(context).textTheme.labelMedium,
-                ),
-              ],
+                  const SizedBox(width: 6),
+                  Flexible(
+                    child: Text(
+                      _shortLabel(c.link),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.labelMedium,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         );

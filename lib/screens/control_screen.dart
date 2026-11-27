@@ -33,7 +33,9 @@ class ControlScreen extends StatelessWidget {
         ],
       ),
     );
-    if (ok == true) c.sendCommand(CommandKind.start);
+    if (ok == true) {
+      c.sendCommand(CommandKind.start);
+    }
   }
 
   @override
